@@ -40,7 +40,8 @@ app.set('view engine', 'ejs')
 var index = require('./routes/index')
 var users = require('./routes/users')
 var api = require('./routes/api')
-var api_product_get = require('./routes/api/product_get')
+// var api_product_get = require('./routes/api/product_get')
+var api_product_list_get = require('./routes/api/product_list_get')
 
 
 /**
@@ -110,10 +111,16 @@ app.use(flash())
 
 app.use('/', index)
 app.use('/users', users)
-app.use('/api', api)
-app.use('/api', api_product_get)
+
+// ---------------------------
+// Prefix api/
+route_prefix = '/api'
+app.use(route_prefix, api)	
+app.use(route_prefix, api_product_list_get)
+// app.use('/api', api_product_get)
+// ---------------------------
 
 
-app.listen(3000, function(){
-	console.log('Server running at port 3000: http://127.0.0.1:3000')
+app.listen(config.server.port, function(){
+	console.log('Server running at port ' + config.server.port + ': http://' + config.server.host + ':' + config.server.port)
 })

@@ -32,7 +32,11 @@ var app = express()
 // access api/product
 app.get('/product', function(req, res, next) {
 	req.getConnection(function(error, conn) {
-		conn.query('SELECT * FROM product ORDER BY product_id DESC',function(err, rows, fields) {
+		sql = ''
+		sql+= 'SELECT * '
+		sql+= 'FROM product '
+		sql+= 'ORDER BY product_id DESC'
+		conn.query(sql,function(err, rows, fields) {
 			// if(err) throw err
 			if (err) {
 				// console.log(err)
@@ -49,6 +53,30 @@ app.get('/product', function(req, res, next) {
 					data: rows
 				})
 			}
+		})
+	})
+})
+
+// SHOW LIST OF PRODUCTS JSON
+// access api/product
+app.get('/product_json', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+		sql = ''
+		response = '';
+		
+		sql+= 'SELECT * '
+		sql+= 'FROM product '
+		sql+= 'ORDER BY product_id DESC'
+		conn.query(sql,function(err, rows, fields) {
+			
+			rows = JSON.stringify(rows)
+			// console.log(rows)
+			// render to views/user/list.ejs template file
+			res.render('api/index', {
+				title: 'API product List', 
+				data: rows
+			})
+			
 		})
 	})
 })
