@@ -39,6 +39,7 @@ app.set('view engine', 'ejs')
  */ 
 var index = require('./routes/index')
 var users = require('./routes/users')
+var login = require('./routes/login')
 var api = require('./routes/api')
 // var api_product_get = require('./routes/api/product_get')
 var api_product_list_get = require('./routes/api/product_list_get')
@@ -98,6 +99,16 @@ app.use(methodOverride(function (req, res) {
 var flash = require('express-flash')
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+const { request, response } = require('./routes/index')
+
+/* middleware auth start */
+var myLogger = function (req, res, next) {
+	console.log('LOGGED')
+	next()
+  }
+  
+app.use(myLogger);
+ /* middleware auth end */
 
 app.use(cookieParser('keyboard cat'))
 app.use(session({ 
@@ -111,6 +122,7 @@ app.use(flash())
 
 app.use('/', index)
 app.use('/users', users)
+app.use('/login', login)
 
 // ---------------------------
 // Prefix api/
